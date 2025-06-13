@@ -6,7 +6,6 @@
 
 ```bash
 git clone git@github.com:Julo-coder/BMOfficial.git
-cd MyPythonApp
 ```
 
 2. **Instalacja wurtialnego srodowiska:**
