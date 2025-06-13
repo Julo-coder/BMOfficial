@@ -5,7 +5,7 @@
 ### 1. **Klonowanie repozytorium:**
 
 ```bash
-git clone git@github.com:Julo-coder/BMOfficial.git
+git clone git@github.com:Julo-coder/BumpMapping.git
 ```
 
 ### 2. **Instalacja wirtualnego środowiska:**
