@@ -5,7 +5,7 @@
 1. **Sklonuj repozytorium:**
 
 ```bash
-git clone git@github.com:Julo-coder/BumpMapping.git
+git clone git@github.com:Julo-coder/BMOfficial.git
 cd MyPythonApp
 ```
 
