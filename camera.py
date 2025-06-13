@@ -30,10 +30,6 @@ class Camera:
         self.last_y = self.center_y
         self.first_mouse = True
         
-        # Sterowanie resetowaniem myszy przy krawędzi
-        self.border_threshold = 50  # odległość od krawędzi, przy której resetujemy mysz
-        self.should_reset_mouse = True
-        
         self.update_camera_vectors()
     
     def get_view_matrix(self):
@@ -59,44 +55,39 @@ class Camera:
             self.last_y = y_pos
             self.first_mouse = False
             return
-        
-        # Sprawdzamy, czy mysz jest blisko krawędzi ekranu
-        near_edge = (x_pos < self.border_threshold or 
-                     x_pos > self.window_width - self.border_threshold or
-                     y_pos < self.border_threshold or 
-                     y_pos > self.window_height - self.border_threshold)
-        
-        # Obliczamy przesunięcie myszy
+
         x_offset = x_pos - self.last_x
-        y_offset = self.last_y - y_pos  # Odwrócone, ponieważ współrzędne y rosną od góry do dołu
-        
-        # Jeśli mysz jest blisko krawędzi, resetujemy jej pozycję
-        if near_edge and self.should_reset_mouse:
-            pygame.mouse.set_pos(self.center_x, self.center_y)
-            self.last_x = self.center_x
-            self.last_y = self.center_y
-            # Ustawiamy flagę, żeby nie resetować myszy w następnej klatce
-            self.should_reset_mouse = False
-            return  # Pomijamy aktualizację kamery w tej klatce
-        else:
-            self.should_reset_mouse = True
-            self.last_x = x_pos
-            self.last_y = y_pos
-        
-        # Stosujemy czułość
+        y_offset = self.last_y - y_pos  # Odwrócone, bo y rośnie w dół
+
+        self.last_x = x_pos
+        self.last_y = y_pos
+
         x_offset *= self.sensitivity
         y_offset *= self.sensitivity
-        
-        # Aktualizujemy kąty Eulera
+
         self.yaw += x_offset
         self.pitch += y_offset
-        
-        # Ograniczenie kąta pionowego
+
         if self.pitch > 89.0:
             self.pitch = 89.0
         if self.pitch < -89.0:
             self.pitch = -89.0
-            
+
+        self.update_camera_vectors()
+    
+    def process_mouse_movement_relative(self):
+        x_offset, y_offset = pygame.mouse.get_rel()
+        x_offset *= self.sensitivity
+        y_offset *= self.sensitivity
+
+        self.yaw += x_offset
+        self.pitch -= y_offset  # Odwracamy, bo y rośnie w dół
+
+        if self.pitch > 89.0:
+            self.pitch = 89.0
+        if self.pitch < -89.0:
+            self.pitch = -89.0
+
         self.update_camera_vectors()
     
     def update_camera_vectors(self):
@@ -108,3 +99,4 @@ class Camera:
         self.front = glm.normalize(front)
         self.right = glm.normalize(glm.cross(self.front, self.world_up))
         self.up = glm.normalize(glm.cross(self.right, self.front))
+

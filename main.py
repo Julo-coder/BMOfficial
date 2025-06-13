@@ -85,6 +85,7 @@ def main():
     # Ukrycie kursora myszy i zamknięcie go w oknie
     pygame.mouse.set_visible(False)
     pygame.event.set_grab(True)
+    pygame.mouse.get_rel()  # Wyzeruj pierwszy ruch
 
     # Check OpenGL context
     print("OpenGL version:", glGetString(GL_VERSION).decode())
@@ -156,13 +157,17 @@ def main():
                     running = False
                     pygame.mouse.set_visible(True)
                     pygame.event.set_grab(False)
-            elif e.type == pygame.MOUSEMOTION:
-                x, y = e.pos
-                camera.process_mouse_movement(x, y)
+            # USUWAMY obsługę MOUSEMOTION!
+            # elif e.type == pygame.MOUSEMOTION:
+            #     x, y = e.pos
+            #     camera.process_mouse_movement(x, y)
         
         # Obsługa klawiatury
         keys = pygame.key.get_pressed()
         camera.process_keyboard(keys)
+        
+        # Obsługa myszy w trybie relatywnym (pełny obrót kamery)
+        camera.process_mouse_movement_relative()
         
         # Aktualizacja macierzy widoku
         view = camera.get_view_matrix()

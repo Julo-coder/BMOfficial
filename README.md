@@ -19,7 +19,8 @@ source env/bin/activate
 #### Windows
 ```bash
 python -m venv env
-env\Scripts\activate
+PowerShell: env\Scripts\activate
+CMD: env\Scripts\activate.bat
 ```
 
 3. **Instalacja potrzebnych bibliotek:**
@@ -32,7 +33,7 @@ pip3 install -r requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
-## Wazne do działania na Linuxie z Ubuntu
+## Ważne do działania na Linuxie z Ubuntu
 **Należy dodać poniższy kod do górnej części pliku main.py**
 ```bash
 import os
