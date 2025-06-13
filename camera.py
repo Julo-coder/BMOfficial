@@ -11,21 +11,17 @@ class Camera:
         self.right = glm.vec3(0, 0, 0)
         self.world_up = glm.vec3(0, 1, 0)
         
-        # Kąty Eulera
         self.yaw = -90.0
         self.pitch = 0.0
         
-        # Parametry kamery
         self.movement_speed = 0.05
-        self.sensitivity = 0.3  # Wysoka czułość dla lepszej responsywności
+        self.sensitivity = 0.3
         
-        # Parametry okna
         self.window_width = window_width
         self.window_height = window_height
         self.center_x = window_width // 2
         self.center_y = window_height // 2
         
-        # Poprzednia pozycja myszy
         self.last_x = self.center_x
         self.last_y = self.center_y
         self.first_mouse = True
@@ -57,7 +53,7 @@ class Camera:
             return
 
         x_offset = x_pos - self.last_x
-        y_offset = self.last_y - y_pos  # Odwrócone, bo y rośnie w dół
+        y_offset = self.last_y - y_pos 
 
         self.last_x = x_pos
         self.last_y = y_pos
@@ -81,7 +77,7 @@ class Camera:
         y_offset *= self.sensitivity
 
         self.yaw += x_offset
-        self.pitch -= y_offset  # Odwracamy, bo y rośnie w dół
+        self.pitch -= y_offset
 
         if self.pitch > 89.0:
             self.pitch = 89.0

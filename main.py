@@ -2,7 +2,6 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 import numpy as np
-import ctypes
 import glm
 import sys
 from PIL import Image
@@ -15,10 +14,6 @@ from shapes import create_cube, create_sphere
 # Dla komputerów z linuxem
 import os
 os.environ["SDL_VIDEO_X11_FORCE_EGL"] = "1"
-#Aby nie tworzył się folder pycache
-os.environ["PYTHONDONTWRITEBYTECODE"] = "1"
-
-
 
 def load_shader(vertex_path, fragment_path):
     with open(vertex_path) as f:
@@ -71,23 +66,21 @@ def load_texture(path, unit):
 def main():
     pygame.init()
 
-    # Set OpenGL context attributes before creating the window
     pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, 3)
     pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, 3)
     pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE)
 
-    # Utworzenie okna
     screen_width = 800
     screen_height = 600
     pygame.display.set_mode((screen_width, screen_height), DOUBLEBUF | OPENGL)
     pygame.display.set_caption("Sześciany i kule - Pygame")
     
-    # Ukrycie kursora myszy i zamknięcie go w oknie
+    # Ukrycie kursora myszy i zablokowanie go w oknie
     pygame.mouse.set_visible(False)
     pygame.event.set_grab(True)
-    pygame.mouse.get_rel()  # Wyzeruj pierwszy ruch
+    pygame.mouse.get_rel()
 
-    # Check OpenGL context
+    # Sprawdzenie wersji OpenGL
     print("OpenGL version:", glGetString(GL_VERSION).decode())
 
     glEnable(GL_DEPTH_TEST)
@@ -98,7 +91,7 @@ def main():
     # Inicjalizacja kamery z prawidłowymi parametrami okna
     camera = Camera(screen_width, screen_height)
 
-    # Load shaders
+    # Ładowanie shaderów
     shader = load_shader("shaders/vertex_shader.glsl", "shaders/fragment_shader.glsl")
     
     # Tworzenie obiektów geometrycznych
@@ -125,9 +118,9 @@ def main():
     # Generujemy 6 losowych pozycji - 3 dla sześcianów i 3 dla kul
     positions = []
     for _ in range(6):
-        x = random.uniform(-5.0, 5.0)  # Zmniejszony zakres z -10,10 do -5,5
-        y = random.uniform(-3.0, 3.0)  # Zmniejszony zakres z -5,5 do -3,3
-        z = random.uniform(-10.0, -5.0)  # Bliżej kamery
+        x = random.uniform(-5.0, 5.0)  
+        y = random.uniform(-3.0, 3.0) 
+        z = random.uniform(-10.0, -5.0)
         positions.append(glm.vec3(x, y, z))
     
     # Przypisanie tekstur do obiektów
@@ -157,10 +150,6 @@ def main():
                     running = False
                     pygame.mouse.set_visible(True)
                     pygame.event.set_grab(False)
-            # USUWAMY obsługę MOUSEMOTION!
-            # elif e.type == pygame.MOUSEMOTION:
-            #     x, y = e.pos
-            #     camera.process_mouse_movement(x, y)
         
         # Obsługa klawiatury
         keys = pygame.key.get_pressed()
@@ -189,7 +178,7 @@ def main():
             diffuse_tex = textures[texture_name]["diffuse"]
             normal_tex = textures[texture_name]["normal"]
             
-            # Ustawiamy tekstury w shaderze
+            # Ustawienie tekstur w shaderze
             glActiveTexture(GL_TEXTURE0)
             glBindTexture(GL_TEXTURE_2D, diffuse_tex)
             glUniform1i(glGetUniformLocation(shader, "diffuseMap"), 0)
@@ -198,7 +187,7 @@ def main():
             glBindTexture(GL_TEXTURE_2D, normal_tex)
             glUniform1i(glGetUniformLocation(shader, "normalMap"), 1)
             
-            # Tworzymy macierz modelu bez rotacji
+            # Tworzenie macierzy modelu bez rotacji
             model = glm.mat4(1.0)
             model = glm.translate(model, obj["position"])
             
@@ -211,7 +200,7 @@ def main():
             if obj["type"] == "cube":
                 glBindVertexArray(cube_vao)
                 glDrawElements(GL_TRIANGLES, cube_index_count, GL_UNSIGNED_INT, None)
-            else:  # sphere
+            else: 
                 glBindVertexArray(sphere_vao)
                 glDrawElements(GL_TRIANGLES, sphere_index_count, GL_UNSIGNED_INT, None)
 
@@ -220,7 +209,6 @@ def main():
 
     pygame.quit()
     sys.exit()
-
 
 if __name__ == "__main__":
     main()

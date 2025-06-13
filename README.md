@@ -1,14 +1,14 @@
-# BumpMapping - Jak uruchomic aplikacje.
+# BumpMapping - Jak uruchomić aplikację.
 
 ## Instalacja
 
-1. **Sklonuj repozytorium:**
+### 1. **Klonowanie repozytorium:**
 
 ```bash
 git clone git@github.com:Julo-coder/BMOfficial.git
 ```
 
-2. **Instalacja wurtialnego srodowiska:**
+### 2. **Instalacja wirtualnego środowiska:**
 #### Linux/MacOS
 ```bash
 python3 -m venv env
@@ -22,7 +22,7 @@ PowerShell: env\Scripts\activate
 CMD: env\Scripts\activate.bat
 ```
 
-3. **Instalacja potrzebnych bibliotek:**
+### 3. **Instalacja potrzebnych bibliotek:**
 #### Linux/MacOS
 ```bash
 pip3 install -r requirements.txt

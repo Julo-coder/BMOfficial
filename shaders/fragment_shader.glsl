@@ -13,7 +13,7 @@ out vec4 FragColor;
 void main()
 {
     vec3 normal = texture(normalMap, TexCoord).rgb;
-    normal = normalize(normal * 2.0 - 1.0); // tangent space
+    normal = normalize(normal * 2.0 - 1.0);
     normal = normalize(TBN * normal);
 
     vec3 color = texture(diffuseMap, TexCoord).rgb;
